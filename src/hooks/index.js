@@ -1,11 +1,11 @@
+import React from 'react';
 import { useState } from 'react';
 
 const Thing = () => {
-  function handleThing() {
-    console.log('thing')
-  }
+  const [foo, setFoo] = useState('foo');
+
   return (
-    <div>Hey</div>
+    <div>{foo}</div>
   );
 }
 
