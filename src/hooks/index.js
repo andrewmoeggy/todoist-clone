@@ -37,5 +37,31 @@ export const useTasks = selectedProject => {
 
       setArchivedTasks(newTasks.filter(task => task.archived !== false));
     })
-  }, [selectedProject])
+
+    return () => unsubsribe();
+  }, [selectedProject]);
+
+  return { tasks, archivedTasks };
 };
+
+export const useProjects = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    firebase.firestore.collection('projects').where('userId', '==', 'a3ofij11dfa')
+      .orderBy('projectId')
+      .get()
+      .then(snapshot => {
+        const allProjects = snapshot.docs.map(project => ({
+          ...project.data(),
+          docId: project.id
+        }))
+
+        if (JSON.stringify(allProjects) !== JSON.stringify(projects)) {
+          setProjects(allProjects);
+        }
+      })
+  }, [projects])
+
+  return { projects, setProjects }
+}
