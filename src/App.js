@@ -2,15 +2,16 @@ import React from 'react';
 import { Header } from './components/layout/Header';
 import { Content } from './components/layout/Context'
 import '../src/App.scss'
+import { ProjectsProvider, SelectedProjectProvider } from './context';
 
-export const App = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
+export const App = () => (
+  <SelectedProjectProvider>
+    <ProjectsProvider>
+      <div className="App">
         <Header />
         <Content />
-      </header>
-    </div>
-  );
-}
+      </div>
+    </ProjectsProvider>
+  </SelectedProjectProvider>
+)
 

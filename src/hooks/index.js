@@ -48,7 +48,7 @@ export const useProjects = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    firebase.firestore.collection('projects').where('userId', '==', 'a3ofij11dfa')
+    firebase.firestore().collection('projects').where('userId', '==', 'a3ofij11dfa')
       .orderBy('projectId')
       .get()
       .then(snapshot => {
