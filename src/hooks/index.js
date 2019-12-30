@@ -1,12 +1,41 @@
-import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { firebase } from '../firebase';
+import { collatedTasksExist } from '../helpers';
+import moment from 'moment';
 
-const Thing = () => {
-  const [foo, setFoo] = useState('foo');
+// first userID: a3ofij11dfa
 
-  return (
-    <div>{foo}</div>
-  );
-}
+// custom hook for setting tasks
+export const useTasks = selectedProject => {
+  const [tasks, setTasks] = useState([]);
+  const [archivedTasks, setArchivedTasks] = useState([]);
 
-export default Thing;
+  useEffect(() => {
+    let unsubsribe = firebase
+      .firestore()
+      .collection('tasks')
+      .where('userId', '==', 'a3ofij11dfa');
+
+    unsubsribe = selectedProject && !collatedTasksExist(selectedProject) ?
+      (unsubsribe = unsubsribe.where('projectId', '==', selectedProject))
+      : selectedProject === 'TODAY'
+        ? (unsubsribe = unsubsribe.where('date', '==', moment().format('DD/MM/YYYY')))
+        : selectedProject === 'INBOX' || selectedProject === 0
+          ? (unsubsribe = unsubsribe.where('date', '==', ''))
+          : unsubsribe;
+
+    unsubsribe = unsubsribe.onSnapshot(snapshot => {
+      const newTasks = snapshot.docs.map(task => ({
+        id: task.id,
+        ...task.data(),
+      }));
+
+      setTasks(
+        selectedProject === 'NEXT_7' ?
+          newTasks.filter(task => moment(task.date, 'DD-MM-YYYY').diff(moment(), 'days') <= 7 && task.archived !== true)
+          : newTasks.filter(task => task.archived !== true))
+
+      setArchivedTasks(newTasks.filter(task => task.archived !== false));
+    })
+  }, [selectedProject])
+};
