@@ -1,4 +1,3 @@
-
 import {
   ProjectsContext,
   ProjectsProvider,
