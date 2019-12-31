@@ -13,7 +13,7 @@ export const Projects = ({ activeValue = null }) => {
         key={project.projectId}
         data-doc-id={project.projectId}
         data-testid='project-action'
-        className={active === project.projectId ? 'active sidebar__project' : 'sidebbar__project'}
+        className={active === project.projectId ? 'active sidebar__project' : 'sidebar__project'}
         onClick={() => {
           setActive(project.projectId)
           setSelectedProject(project.projectId)
