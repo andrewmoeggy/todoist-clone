@@ -9,8 +9,6 @@ export const App = () => (
     <ProjectsProvider>
       <div className="App">
         <Header />
-        <Header />
-        <Content />
         <Content />
       </div>
     </ProjectsProvider>
