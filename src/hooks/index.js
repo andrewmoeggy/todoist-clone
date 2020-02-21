@@ -57,9 +57,7 @@ export const useProjects = () => {
           docId: project.id
         }))
 
-        if (JSON.stringify(allProjects) !== JSON.stringify(projects)) {
-          setProjects(allProjects);
-        }
+
       })
   }, [projects])
 
