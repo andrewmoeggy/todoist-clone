@@ -11,7 +11,6 @@ export const App = () => (
         <Header />
         <Header />
         <Content />
-        <Content />
       </div>
     </ProjectsProvider>
   </SelectedProjectProvider>
