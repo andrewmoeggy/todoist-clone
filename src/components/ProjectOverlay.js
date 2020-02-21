@@ -2,7 +2,7 @@ import React from 'react';
 
 const ProjectOverlay = () => {
   return (
-    <div></div>
+    <div>Overlay</div>
   );
 }
 
