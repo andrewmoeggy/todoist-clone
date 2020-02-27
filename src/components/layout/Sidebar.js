@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
+import {
+  FaChevronDown,
+  FaInbox,
+  FaRegCalendarAlt,
+  FaRegCalendar,
+} from 'react-icons/fa';
 import { Projects } from '../Projects';
-import { AddProject } from './../AddProject';
-import { FaChevronDown, FaInbox, FaRegCalendarAlt, FaRegCalendar } from 'react-icons/fa';
 import { useSelectedProjectValue } from '../../context';
-
+import { AddProject } from '../AddProject';
 
 export const Sidebar = () => {
-
   const { setSelectedProject } = useSelectedProjectValue();
-  const [active, setActive] = useState('inbox')
+  const [active, setActive] = useState('inbox');
   const [showProjects, setShowProjects] = useState(true);
 
   return (
-    <div className="sidebar" datatest-id='sidebar'>
+    <div className="sidebar" data-testid="sidebar">
       <ul className="sidebar__generic">
         <li
           data-testid="inbox"
@@ -38,7 +41,6 @@ export const Sidebar = () => {
             <span>Inbox</span>
           </div>
         </li>
-
         <li
           data-testid="today"
           className={active === 'today' ? 'active' : undefined}
@@ -88,8 +90,19 @@ export const Sidebar = () => {
           </div>
         </li>
       </ul>
-      <div className="sidebar__middle" onClick={() => setShowProjects(!showProjects)}>
-        <span><FaChevronDown className={!showProjects ? 'hidden-projects' : undefined} /></span>
+      <div
+        className="sidebar__middle"
+        aria-label="Show/hide projects"
+        onClick={() => setShowProjects(!showProjects)}
+        onKeyDown={() => setShowProjects(!showProjects)}
+        role="button"
+        tabIndex={0}
+      >
+        <span>
+          <FaChevronDown
+            className={!showProjects ? 'hidden-projects' : undefined}
+          />
+        </span>
         <h2>Projects</h2>
       </div>
 
@@ -97,5 +110,5 @@ export const Sidebar = () => {
 
       {showProjects && <AddProject />}
     </div>
-  )
-}
+  );
+};

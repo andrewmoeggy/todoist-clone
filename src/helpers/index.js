@@ -8,14 +8,14 @@ export const getCollatedTitle = (projects, key) =>
 
 export const collatedTasksExist = selectedProject =>
   collatedTasks.find(task => task.key === selectedProject);
-// taken from github, similar ID generator to firebase. 
+
 export const generatePushId = (() => {
   const PUSH_CHARS =
     '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
 
   const lastRandChars = [];
 
-  return function () {
+  return function() {
     let now = new Date().getTime();
 
     const timeStampChars = new Array(8);

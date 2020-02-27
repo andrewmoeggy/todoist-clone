@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { firebase } from '../firebase';
 import { generatePushId } from '../helpers';
 import { useProjectsValue } from '../context';
@@ -8,20 +9,23 @@ export const AddProject = ({ shouldShow = false }) => {
   const [projectName, setProjectName] = useState('');
 
   const projectId = generatePushId();
-  const { setProjects } = useProjectsValue();
+  const { projects, setProjects } = useProjectsValue();
 
-  const addProject = () => {
-    projectName && firebase.firestore().collection('projects').add({
-      projectId,
-      name: projectName,
-      userId: 'a3ofij11dfa'
-    })
+  const addProject = () =>
+    projectName &&
+    firebase
+      .firestore()
+      .collection('projects')
+      .add({
+        projectId,
+        name: projectName,
+        userId: 'jlIFXIwyAL3tzHMtzRbw',
+      })
       .then(() => {
-        setProjects([]);
+        setProjects([...projects]);
         setProjectName('');
         setShow(false);
-      })
-  }
+      });
 
   return (
     <div className="add-project" data-testid="add-project">
@@ -70,4 +74,8 @@ export const AddProject = ({ shouldShow = false }) => {
       </span>
     </div>
   );
-}
+};
+
+AddProject.propTypes = {
+  shouldShow: PropTypes.bool,
+};

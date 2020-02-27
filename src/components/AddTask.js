@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { firebase } from '../firebase';
 import { FaRegListAlt, FaRegCalendarAlt } from 'react-icons/fa';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import { firebase } from '../firebase';
 import { useSelectedProjectValue } from '../context';
+import { ProjectOverlay } from './ProjectOverlay';
+import { TaskDate } from './TaskDate';
 
-export const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddTask, setShowQuickAddTask }) => {
-  const [task, setTask] = useState('')
+export const AddTask = ({
+  showAddTaskMain = true,
+  shouldShowMain = false,
+  showQuickAddTask,
+  setShowQuickAddTask,
+}) => {
+  const [task, setTask] = useState('');
   const [taskDate, setTaskDate] = useState('');
   const [project, setProject] = useState('');
   const [showMain, setShowMain] = useState(shouldShowMain);
@@ -19,27 +27,34 @@ export const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQu
     let collatedDate = '';
 
     if (projectId === 'TODAY') {
-      collatedDate = moment.format('DD/MM/YYYY');
+      collatedDate = moment().format('DD/MM/YYYY');
     } else if (projectId === 'NEXT_7') {
-      collatedDate = moment.add(7, 'days').format('MM/DD/YYYY')
+      collatedDate = moment()
+        .add(7, 'days')
+        .format('DD/MM/YYYY');
     }
 
-    return (task && projectId && firebase.firestore()
-      .collection('tasks').add({
-        archived: false,
-        projectId,
-        task,
-        date: collatedDate || taskDate,
-        userId: 'a3ofij11dfa'
-      })
-      .then(() => {
-        setTask('');
-        setProject('');
-        setShowMain('');
-        setShowProjectOverlay(false)
-      })
-    )
-  }
+    return (
+      task &&
+      projectId &&
+      firebase
+        .firestore()
+        .collection('tasks')
+        .add({
+          archived: false,
+          projectId,
+          task,
+          date: collatedDate || taskDate,
+          userId: 'jlIFXIwyAL3tzHMtzRbw',
+        })
+        .then(() => {
+          setTask('');
+          setProject('');
+          setShowMain('');
+          setShowProjectOverlay(false);
+        })
+    );
+  };
 
   return (
     <div
@@ -89,7 +104,7 @@ export const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQu
               </div>
             </>
           )}
-          {/* <ProjectOverlay
+          <ProjectOverlay
             setProject={setProject}
             showProjectOverlay={showProjectOverlay}
             setShowProjectOverlay={setShowProjectOverlay}
@@ -98,9 +113,7 @@ export const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQu
             setTaskDate={setTaskDate}
             showTaskDate={showTaskDate}
             setShowTaskDate={setShowTaskDate}
-          /> */}
-          <p>Project Overlay</p>
-          <p>Task Date here</p>
+          />
           <input
             className="add-task__content"
             aria-label="Enter your task"
@@ -163,5 +176,12 @@ export const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQu
         </div>
       )}
     </div>
-  )
-}
+  );
+};
+
+AddTask.propTypes = {
+  showAddTaskMain: PropTypes.bool,
+  shouldShowMain: PropTypes.bool,
+  showQuickAddTask: PropTypes.bool,
+  setShowQuickAddTask: PropTypes.func,
+};
